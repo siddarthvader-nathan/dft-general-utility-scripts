@@ -142,5 +142,23 @@ class DosExtractor():
        
      return dos
 
-
-
+    def get_dos_plot(self,dplt,xlim,ylim):
+        
+        """Returns dos plot with tried and tersted formatting: xlabels,ylabels,xticks etc.
+        Call after using dplt.add_dos to add dos objects to dplt.
+        Commented arguments can be used as per convenience
+        
+        Args:
+        1. dplt: DosPlotter() object
+        2.xlim: x axis range of plot. Enter as [beginning, end]
+        3.ylim: y axis range of plot. Enter as [beginning, end]"""
+        
+        dos_plot = dplt.get_plot(xlim=xlim,ylim=ylim)
+        dos_plot.xlabel("Energy(eV)",fontsize=24)
+        dos_plot.ylabel("Density of states(per eV per f.u.)",fontsize=24)
+        dos_plot.tick_params('both',length=10,width=2)
+        dos_plot.minorticks_on()
+        #dos_plot.legend(loc='upper right', ncol=1, fontsize=24)
+        return dos_plot
+        
+        
