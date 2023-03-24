@@ -28,12 +28,12 @@ class DosExtractor():
         tdos=self.vasprun.tdos
         
         if scaling_factor != 1:
-          tdos = self.scale(scaling_factor)
+          tdos = self.scale(scaling_factor,tdos)
         
         return tdos
 
 
-    def get_elem_dos(self,element):
+    def get_elem_dos(self,element,scaling_factor=1):
 
         """
         Extracts elemental contribution to dos.        
@@ -50,12 +50,14 @@ class DosExtractor():
         for key in cdos.get_element_dos().keys():
             if key.name is element:
                 elem_dos = cdos.get_element_dos()[key]
-            
+        
+        if scaling_factor != 1:
+          elem_dos = self.scale(scaling_factor,elem_dos)  
+        
         return elem_dos
 
     
-
-    def get_elem_pdos(self,element,orbital_name):
+    def get_elem_pdos(self,element,orbital_name,scaling_factor=1):
 
         """         
         Extracts orbital projection of elemental contribution to dos.
@@ -75,6 +77,9 @@ class DosExtractor():
                 elem_dos=cdos.get_element_spd_dos(element)
                 elem_proj_dos=elem_dos[orb_type]
             
+         if scaling_factor != 1:
+          elem_proj_dos = self.scale(scaling_factor,elem_proj_dos) 
+        
         return elem_proj_dos
 
        
@@ -105,19 +110,37 @@ class DosExtractor():
         
         return orb_pdos
        
-    def scale(self,scaling_factor):
+    def get_site_dos(self,element):
+        
+        """Returns density of states of all sites of a particular element. 
+        Useful for comparing effects of local environment on charge density, metallicity etc.
+        Returns alll site dos as a list of dos objects"""
+        
+        """Args:
+        1. element(str): name of element we want to look at site specific dos of, eg. Ti"""
+        
+        dos = self.vasprun.complete_dos        
+        sdos_list = []
+        for site in cdos.structure:
+            for elem_name in site.species.elements:
+                 if elem_name.name is element:
+                   sdos_list.append(cdos.get_site_dos(site))
+        return sdos_list
+            
+    
+    def scale(self,scaling_factor,dos):
      
      """Scales tdos to units of eV^{-1} FU^{-1}.
      
      Args:
      1. factor(int): scaling factor i.e. size of unit cell
+     2. dos: pymatgen DoS object to scale according to number of formula units
      """
-     
-     tdos = self.vasprun.tdos     
+         
      for key in tdos.densities.keys():
-        tdos.densities[key]/= scaling_factor
+        dos.densities[key]/= scaling_factor
        
-     return tdos
+     return dos
 
 
 
