@@ -114,7 +114,7 @@ class DosExtractor():
         
         """Returns density of states of all sites of a particular element. 
         Useful for comparing effects of local environment on charge density, metallicity etc.
-        Returns alll site dos as a list of dos objects"""
+        Returns all site dos as a list of dos objects"""
         
         """Args:
         1. element(str): name of element we want to look at site specific dos of, eg. Ti"""
