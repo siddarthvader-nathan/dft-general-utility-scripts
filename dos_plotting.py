@@ -40,6 +40,7 @@ class DosExtractor():
 
         Args:
         element(str): name of element we want to look at dos of 
+        factor(int): set by default to 1, if not, scales dos to units of eV/FU
         
         Returns:
         elem_dos: pymatgen dos object, e.g. Ti total contribution to dos
@@ -65,6 +66,7 @@ class DosExtractor():
         Args:        
         1. element(str): name of element we want to look at dos of, eg. Ti
         2. orbital_name(str): name of atomic orbital e.g. 'd' 
+        3.factor(int): set by default to 1, if not, scales tdos to units of eV/FU
         Returns:
 
         elem_proj_dos: pymatgen dos object, e.g. Ti-3d contribution
