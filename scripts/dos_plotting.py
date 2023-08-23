@@ -139,7 +139,7 @@ class DosExtractor():
      2. dos: pymatgen DoS object to scale according to number of formula units
      """
          
-     for key in tdos.densities.keys():
+     for key in dos.densities.keys():
         dos.densities[key]/= scaling_factor
        
      return dos
@@ -157,7 +157,7 @@ class DosExtractor():
         
         dos_plot = dplt.get_plot(xlim=xlim,ylim=ylim)
         dos_plot.xlabel("Energy(eV)",fontsize=24)
-        dos_plot.ylabel("Density of states(per eV per f.u.)",fontsize=24)
+        dos_plot.ylabel("Density of states(states/eV/f.u.)",fontsize=24)
         dos_plot.tick_params('both',length=10,width=2)
         dos_plot.minorticks_on()
         #dos_plot.legend(loc='upper right', ncol=1, fontsize=24)
