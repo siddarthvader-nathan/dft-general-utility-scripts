@@ -1,35 +1,34 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
 import ase.io
 import numpy as np
 
-
 def get_kpts_array(atoms,desired_kpra):
-    
-    #Args- atoms:ase.Atoms object, desired_kpra:int
-    
-    lcf = min(atoms.cell.lengths())
-    kpts_raw = lcf/atoms.cell.lengths()
-    
-    #Initial guess
-    kpts = 10 * np.array([round(i,1) for i in kpts_raw])
+"""atoms: ASE atoms object
+   kpra: K-points per reciprocal atom"""
+    a1 = atoms.cell[0]
+    a2 = atoms.cell[1]
+    a3 = atoms.cell[2]
 
-    kpra_less = 1
-    kpra_more = 1
+    b1 = 2 * np.pi* (np.cross(a2,a3))/ np.dot(a1,np.cross(a2,a3))
+    b2 = 2 * np.pi* (np.cross(a3,a1))/ np.dot(a2,np.cross(a3,a1))
+    b3 = 2 * np.pi* (np.cross(a1,a2))/ np.dot(a3,np.cross(a1,a2))
+
+    kpts_raw = np.array([np.linalg.norm(b1,2),np.linalg.norm(b2,2),np.linalg.norm(b3,2)])
+    kpts = np.round(kpts_raw,0)
+
+
+    kpra_less = True
+    kpra_more = True
 
     while(kpra_less or kpra_more):
-    
-        if (len(atoms) * np.prod(kpts) < desired_kpra):
-            kpra_more = 0
-            kpts = kpts + 1
-    
-        else:
-            kpra_less = 0
-            kpts = kpts - 1
         
+        if (len(atoms) * np.prod(kpts) < desired_kpra):
+            kpra_more = False
+            if(kpra_less):
+                kpts = kpts + 1
+        
+        else:
+            kpra_less = False
+            if(kpra_more):
+                kpts = kpts - 1
+    
     return kpts
-
