@@ -16,11 +16,13 @@ export OMP_NUM_THREADS=1
 echo "SLURM_NTASKS: " $SLURM_NTASKS
 
 module purge
-module load intel-oneapi
-module load hdf5/1.12.0-intel20.4
+#module load intel-oneapi
+module load intelmpi/2021.3.0-intel2021.3.0 
+#module load hdf5/1.12.0-intel20.4
+#module load intelmpi gcc/10.2.0
 
 
-export VASP_COMMAND="mpirun -np $SLURM_NTASKS /opt/packages/VASP/VASP6/6.4.3/ONEAPI/vasp_std"
+export VASP_COMMAND="mpirun -np $SLURM_NTASKS /opt/packages/VASP/VASP6/6.3/INTEL/vasp_std"
 export VASP_PP_PATH=$HOME/pseudopotentials
 
 
