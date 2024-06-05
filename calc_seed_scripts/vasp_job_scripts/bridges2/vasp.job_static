@@ -1,0 +1,30 @@
+#!/bin/bash
+#SBATCH -N 1
+#SBATCH -p RM-shared
+#SBATCH --ntasks-per-node=16
+#SBATCH --job-name=job
+#SBATCH -t 1:00:00
+#SBATCH -o job.o
+#SBATCH -e job.e
+#SBATCH -A mat230008p 
+#SBATCH --mail-user=siddharthanathan2026@u.northwestern.edu
+#SBATCH --mail-type=begin      # email when job starts
+#SBATCH --mail-type=end        # email when job ends
+
+ulimit -s unlimited
+export OMP_NUM_THREADS=1
+echo "SLURM_NTASKS: " $SLURM_NTASKS
+
+module purge
+module load intel-oneapi
+module load hdf5/1.12.0-intel20.4
+
+
+export VASP_COMMAND="mpirun -np $SLURM_NTASKS /opt/packages/VASP/VASP6/6.4.3/ONEAPI/vasp_std"
+export VASP_PP_PATH=$HOME/pseudopotentials
+
+
+
+sed -i -e "s/CCC/-6/g" calc.py
+
+python3 calc.py

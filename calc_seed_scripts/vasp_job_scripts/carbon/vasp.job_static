@@ -1,0 +1,18 @@
+#!/bin/bash
+#PBS -l nodes=2:ppn=8
+#PBS -l walltime=1:00:00
+#PBS -N TiOF 
+#PBS -A cnm80339
+##PBS -o TiOF.o%j
+##PBS -e TiOF.e%j
+#PBS -m  ea
+#PBS -M  siddharthanathan2026@u.northwestern.edu
+
+# change into the directory where qsub will be executed
+cd $PBS_O_WORKDIR
+
+export VASP_COMMAND="mpirun vasp_std"
+export VASP_PP_PATH=$HOME/pseudopotentials
+
+sed -i -e "s/CCC/-6/g" calc_ib${j}.py
+python3 calc.py

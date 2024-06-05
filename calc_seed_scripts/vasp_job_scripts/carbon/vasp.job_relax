@@ -1,0 +1,35 @@
+#!/bin/bash
+#PBS -l nodes=4:ppn=16
+#PBS -l walltime=10:00:00
+#PBS -N TiOF 
+#PBS -A cnm80339
+##PBS -o TiOF.o%j
+##PBS -e TiOF.e%j
+#PBS -m  ea
+#PBS -M  siddharthanathan2026@u.northwestern.edu
+
+# change into the directory where qsub will be executed
+cd $PBS_O_WORKDIR
+
+export VASP_COMMAND="mpirun vasp_std"
+export VASP_PP_PATH=$HOME/pseudopotentials
+
+cp POSCAR POSCAR.orig
+mkdir std_outs
+
+
+        for j in 2 1; do
+                cp calc.py calc_ib${j}.py
+                sed -i -e "s/AAA/$j/g" calc_ib${j}.py
+
+		if [ $j == 1 ]; then
+                        sed -i -e "s/CCC/-8/g" calc_ib${j}.py
+                else
+                        sed -i -e "s/CCC/-6/g" calc_ib${j}.py
+                
+                fi
+                python3 calc_ib${j}.py
+                cp CONTCAR POSCAR
+                cp vasp.out vasp.out_ib${j}
+                mv vasp.out_ib${j} ./std_outs
+        done
