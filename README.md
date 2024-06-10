@@ -12,4 +12,4 @@ Vasp_post_processing:
 Calc-seed_script
 1. get_kpts: Gets a gamma centered kmesh of required kpoint density, measured by kpoints per reciprocal atom (KPRA).
 2. job scripts for different compute clusters
-3. calc: ASE VASP setup script, flexible to customization of parmeters such as individual magnetic moments
+3. calc: ASE VASP setup script, flexible to customization of strutures using ASE, as well as VASP calculation parameters such as individual magnetic moments.
