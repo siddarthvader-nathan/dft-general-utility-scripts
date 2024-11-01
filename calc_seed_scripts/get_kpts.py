@@ -39,4 +39,4 @@ def get_kpts_array(atoms,desired_kpra):
             else:
                 kpts = kpts -1
         
-    return kpts
+    return kpts.astype(np.int64)
