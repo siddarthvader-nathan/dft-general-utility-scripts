@@ -79,7 +79,7 @@ class DosExtractor():
                 elem_dos=cdos.get_element_spd_dos(element)
                 elem_proj_dos=elem_dos[orb_type]
             
-         if scaling_factor != 1:
+        if scaling_factor != 1:
           elem_proj_dos = self.scale(scaling_factor,elem_proj_dos) 
         
         return elem_proj_dos
